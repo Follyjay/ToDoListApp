@@ -24,5 +24,17 @@ namespace ToDoListApp.UI
 
             return (title, description, dueDate);
         }
+
+        public int GetTaskIndex()
+        {
+            Console.WriteLine("Enter the Index of the Task to be Removed: ");
+            int taskIndex;
+
+            while (!int.TryParse(Console.ReadLine(), out taskIndex) || taskIndex < 0)
+            {
+                Console.WriteLine("Kindly Enter a Correct Task Index");
+            }
+            return taskIndex;
+        }
     }
 }

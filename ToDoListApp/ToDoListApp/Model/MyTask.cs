@@ -4,9 +4,9 @@ namespace ToDoListApp.Model
 {
     public class MyTask
     {
-        public string Title { get; set; }
-        public string Description { get; set; }
-        public DateTime DueDate { get; set; }
+        private string Title { get; set; }
+        private string Description { get; set; }
+        private DateTime DueDate { get; set; }
 
         public bool isCompleted {  get; set; } = false;
 
@@ -16,6 +16,20 @@ namespace ToDoListApp.Model
             Description = description;
             DueDate = dueDate;
 
+        }
+
+        // Return methods for each property
+        public string GetTitle()
+        {
+            return Title;   
+        }
+        public string GetDescription()
+        { 
+            return Description; 
+        }
+        public DateTime GetDueDate()
+        {
+            return DueDate;
         }
     }
 }

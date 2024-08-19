@@ -18,15 +18,29 @@ namespace ToDoListApp.Service
             tasks.Add(task);
         }
 
-        public void AddNewTask(string title, string description, DateTime dueDate) 
+        public bool RemoveTask(int index)
         {
-            MyTask newTask = new MyTask(title, description, dueDate);
-            tasks.Add(newTask);
+            if (tasks.Count >= 0 && index < tasks.Count)
+            {
+                tasks.RemoveAt(index);
+                return true;
+            }
+            return false;
         }
 
         public List<MyTask> GetTasks()
         {
             return tasks;
+        }
+
+        public bool TaskIsComplete(int index)
+        {
+            if (tasks.Count >= 0 && index < tasks.Count)
+            {
+                tasks[index].isCompleted = true;
+                return true;
+            }
+            return false;
         }
     }
 }
