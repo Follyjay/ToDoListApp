@@ -40,18 +40,17 @@ namespace ToDoListApp.Tests
             // Arrange
             TaskService taskService = new TaskService();
 
-            var title = "Appointment";
-            var description = "Remove this Appointment";
+            var title = "test";
+            var description = "Remove test";
             var dueDate = DateTime.Now.AddDays(1);
 
             // Act
-
             taskService.AddTask(new MyTask(title, description, dueDate));
-            var result = taskService.RemoveTask(0);
-            // Asserts
+            var result = taskService.RemoveTask(1);
 
             var tasks = taskService.GetTasks();
 
+            // Asserts
             Assert.That(result, Is.True);
             Assert.That(tasks.Count, Is.EqualTo(0));
         }
@@ -67,15 +66,37 @@ namespace ToDoListApp.Tests
             var dueDate = DateTime.Now.AddDays(1);
 
             // Act
-
             taskService.AddTask(new MyTask(title, description, dueDate));
             var result = taskService.TaskIsComplete(0);
-            // Asserts
 
             var tasks = taskService.GetTasks();
 
+            // Asserts
             Assert.That(result, Is.True);
             Assert.That(tasks[0].isCompleted, Is.True);
+        }
+
+        [Test]
+        public void GetTasks_Should_GetCorrectTasks_BasedOnFilter ()
+        {
+            // Arrange
+            TaskService taskService = new TaskService();
+           
+            // Act
+            taskService.AddTask(new MyTask("task 1", "Completed Task", DateTime.Now));
+            taskService.AddTask(new MyTask("task 2", "Pending Task", DateTime.Now.AddDays(1)));
+            var result = taskService.TaskIsComplete(0);
+
+            var allTasks = taskService.GetTasks();
+            var completedTasks = taskService.GetTasks(showCompleted: true, showPending: false);
+            var pendingTasks = taskService.GetTasks(showCompleted: false, showPending: true);
+
+            // Asserts
+            Assert.That(2, Is.EqualTo(allTasks.Count));
+            Assert.That(1, Is.EqualTo(completedTasks.Count));
+            Assert.That(1, Is.EqualTo(pendingTasks.Count));
+            Assert.That(allTasks[0].isCompleted, Is.True);
+            Assert.That(allTasks[1].isCompleted, Is.False);
         }
     }
 }

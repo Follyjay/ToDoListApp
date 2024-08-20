@@ -9,6 +9,9 @@ namespace ToDoListApp
     {
         static void Main(string[] args)
         {
+            //Prints the welcome message on screen
+            Console.WriteLine("WELCOME TO TASK MANAGER");
+
             // Instance of TaskService and UserInput Object
             TaskService taskService = new TaskService();
             UserInput myInput = new UserInput();
@@ -17,15 +20,12 @@ namespace ToDoListApp
 
             while (!exit)
             {
-
-                //Prints the welcome message on screen
-                Console.WriteLine("WELCOME TO TASK MANAGER");
-
                 // Menu/Option Outline
                 Console.Write("\n1: Create Task \n2: Remove Task " +
-                    "\n3: View Task List \n4: Mark Task as Completed" +
+                    "\n3: Mark Task as Completed \n4: View Task List" +
                     "\n5: Exit\n\n");
                 Console.Write("Choose an option: ");
+                Console.Write("");
 
                 switch (Console.ReadLine())
                 {
@@ -40,55 +40,87 @@ namespace ToDoListApp
                         taskService.AddTask(newTask);
 
                         //Print message upon successful addition of a new event
-                        Console.WriteLine("Task added successfully!\n\n");
+                        Console.WriteLine("Task added successfully!\n");
                         break;
 
                     case "2":
-                        var getIndex = myInput.GetTaskIndex();
+                        var getIndex = myInput.GetTaskIndex("Removed");
 
                         if (taskService.RemoveTask(getIndex))
                         {
                             //Print message upon successful addition of a new event
-                            Console.WriteLine("Task Removed successfully!\n\n");
+                            Console.WriteLine("Task Removed successfully!\n");
                         }
                         else
                         {
-                            Console.WriteLine("Task Not Found\n\n");
+                            Console.WriteLine("Task Not Found\n");
                         }
 
                         break;
 
                     case "3":
-                        var taskList = taskService.GetTasks();
-                        if (taskList.Count > 0)
+                        var taskIndex = myInput.GetTaskIndex("Completed");
+
+                        if (taskService.TaskIsComplete(taskIndex))
                         {
-                            for (int i = 0; i < taskList.Count; i++)
-                            {
-                                var task = taskList[i];
-
-                                Console.WriteLine($"{i + 1}: {task.GetTitle().ToUpper() }" + 
-                                    $"{ task.GetDueDate() } { task.isCompleted }");
-                            }
-
-                            Console.WriteLine("");
+                            Console.WriteLine("Task Completed Successfully\n");
                         }
                         else
                         {
-                            Console.WriteLine("Empty List !!!\n Kindly Add new Tasks\n\n");
+                            Console.WriteLine("Task not Found\n");
                         }
 
                         break;
 
                     case "4":
-                        var taskIndex = myInput.GetTaskIndex();
+                        bool viewList = false;
+                        List<MyTask> taskList = new List<MyTask>();
 
-                        if (taskService.TaskIsComplete(taskIndex))
+                        bool complete = true;
+                        bool pending = true;
+
+                        Console.WriteLine("");
+                        Console.Write("List Of All Added Task");
+
+                        while (!viewList)
                         {
-                            Console.WriteLine("Task Completed Successfully\n\n");
-                        }
-                        else
-                        {
-                            Console.WriteLine("Task not Found\n\n");
+                            Console.WriteLine("\n");
+
+                            Console.Write("1: View All Tasks \n2: View Completed Tasks" +
+                                "\n3: View Pending Tasks \n4: Cancel\n\n");
+                            Console.Write("Choose an Option: ");
+                            Console.Write("");
+
+                            switch (Console.ReadLine())
+                            {
+                                case "1":
+                                    taskList = taskService.GetTasks();
+                                    viewList = true;
+                                    break;
+
+                                case "2":
+                                    taskList = taskService.GetTasks(complete, !pending);
+                                    viewList = true;
+                                    break;
+
+                                case "3":
+                                    taskList = taskService.GetTasks(!complete, pending);
+                                    viewList = true;
+                                    break;
+
+                                case "4":
+                                    viewList = true;
+                                    break;
+
+                                default:
+                                    Console.WriteLine("Invalid Option! Try Again!!!");
+                                    viewList = true;
+                                    break;
+
+                            }
+
+                            taskService.DisplayTasks(taskList);
+
                         }
 
                         break;

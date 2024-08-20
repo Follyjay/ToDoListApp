@@ -6,13 +6,17 @@ namespace ToDoListApp.UI
     {
         public (string Title, string Description, DateTime DueDate) GetUserInput()
         {
-            Console.WriteLine("Title:");
+            Console.Write("\n");
+
+            Console.Write("Title: ");
             string title = Console.ReadLine();
+            Console.Write("");
 
-            Console.WriteLine("Description:");
+            Console.Write("Description: ");
             string description = Console.ReadLine();
+            Console.Write("");
 
-            Console.WriteLine("Due-date (YYYY-mm-dd):");
+            Console.Write("Due-date (YYYY-mm-dd): ");
             DateTime dueDate;
 
             while (!DateTime.TryParse(Console.ReadLine(), out dueDate))
@@ -20,21 +24,20 @@ namespace ToDoListApp.UI
                 Console.WriteLine("Wrong Date Format!!! Please enter correct format");
             }
 
-            //DateTime dueDate = DateTime.Parse(Console.ReadLine());
-
             return (title, description, dueDate);
         }
 
-        public int GetTaskIndex()
+        public int GetTaskIndex(string action)
         {
-            Console.WriteLine("Enter the Index of the Task to be Removed: ");
+            Console.WriteLine("Enter Task Position to be Removed: ");
             int taskIndex;
 
-            while (!int.TryParse(Console.ReadLine(), out taskIndex) || taskIndex < 0)
+            while (!int.TryParse(Console.ReadLine(), out taskIndex) || taskIndex < 1)
             {
-                Console.WriteLine("Kindly Enter a Correct Task Index");
+                Console.WriteLine("Kindly Enter a Correct Task Index (e.g 1,2,3...)");
             }
             return taskIndex;
         }
+
     }
 }
