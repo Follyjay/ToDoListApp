@@ -1,5 +1,4 @@
-﻿using System;
-using ToDoListApp.Model;
+﻿using ToDoListApp.Model;
 using ToDoListApp.Service;
 using ToDoListApp.UI;
 
@@ -13,8 +12,11 @@ namespace ToDoListApp
             Console.WriteLine("WELCOME TO TASK MANAGER");
 
             // Instance of TaskService and UserInput Object
-            TaskService taskService = new TaskService();
-            UserInput myInput = new UserInput();
+            TaskService taskService = new();
+            UserInput myInput = new();
+
+            string path = "myFile.json"; // file path declaration 
+            taskService.LoadTaskFromFile(path); // Load list of task from File
 
             bool exit = false;
 
@@ -31,10 +33,10 @@ namespace ToDoListApp
                 {
                     case "1":
                         // UserInput object to get the users' input
-                        var addNew = myInput.GetUserInput();
+                        var (Title, Description, DueDate) = myInput.GetUserInput();
 
                         //Creates an new To-do-list event
-                        MyTask newTask = new MyTask(addNew.Title, addNew.Description, addNew.DueDate);
+                        MyTask newTask = new(Title, Description, DueDate);
 
                         //Adds a new event to the collection
                         taskService.AddTask(newTask);
@@ -74,7 +76,7 @@ namespace ToDoListApp
 
                     case "4":
                         bool viewList = false;
-                        List<MyTask> taskList = new List<MyTask>();
+                        List<MyTask> taskList = [];
 
                         bool complete = true;
                         bool pending = true;
@@ -136,6 +138,8 @@ namespace ToDoListApp
 
             }
             
+            taskService.SaveTaskToFile(path); // Save list of task into File
+
         }
 
     }

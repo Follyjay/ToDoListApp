@@ -67,7 +67,7 @@ namespace ToDoListApp.Tests
 
             // Act
             taskService.AddTask(new MyTask(title, description, dueDate));
-            var result = taskService.TaskIsComplete(0);
+            var result = taskService.TaskIsComplete(1);
 
             var tasks = taskService.GetTasks();
 
@@ -80,12 +80,12 @@ namespace ToDoListApp.Tests
         public void GetTasks_Should_GetCorrectTasks_BasedOnFilter ()
         {
             // Arrange
-            TaskService taskService = new TaskService();
+            TaskService taskService = new();
            
             // Act
             taskService.AddTask(new MyTask("task 1", "Completed Task", DateTime.Now));
             taskService.AddTask(new MyTask("task 2", "Pending Task", DateTime.Now.AddDays(1)));
-            var result = taskService.TaskIsComplete(0);
+            taskService.TaskIsComplete(1);
 
             var allTasks = taskService.GetTasks();
             var completedTasks = taskService.GetTasks(showCompleted: true, showPending: false);
@@ -97,6 +97,29 @@ namespace ToDoListApp.Tests
             Assert.That(1, Is.EqualTo(pendingTasks.Count));
             Assert.That(allTasks[0].isCompleted, Is.True);
             Assert.That(allTasks[1].isCompleted, Is.False);
+        }
+
+        [Test]
+        public void SaveAndLoadTasks_Should_SaveAndLoadDataFromFile()
+        {
+            // Arrange
+            TaskService taskService = new();
+            string filePath = "test.json";
+
+            // Act
+            taskService.AddTask(new MyTask("task 1", "Completed Task", DateTime.Now));
+            taskService.AddTask(new MyTask("task 2", "Pending Task", DateTime.Now.AddDays(1)));
+            taskService.SaveTaskToFile(filePath);
+
+            taskService.LoadTaskFromFile(filePath);
+            var loadedTasks = taskService.GetTasks();
+
+            // Asserts
+            Assert.That(2, Is.EqualTo(loadedTasks.Count));
+            Assert.That("task 1", Is.EqualTo(loadedTasks[0].GetTitle()));
+
+            // Delete File
+            File.Delete(filePath);
         }
     }
 }

@@ -1,5 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Text.Json;
+using System.Text.Json.Serialization;
+using System.Xml;
 using ToDoListApp.Model;
 
 namespace ToDoListApp.Service
@@ -72,8 +73,8 @@ namespace ToDoListApp.Service
 
                     Console.WriteLine($"{i + 1}.  {task.GetTitle().ToUpper()}: " +
                                         $"{task.GetDueDate()} {status}");
-                    Console.WriteLine("-----------------------------------------------\n");
                 }
+                Console.WriteLine("-----------------------------------------------\n");
 
             }
             else
@@ -86,12 +87,56 @@ namespace ToDoListApp.Service
 
         public bool TaskIsComplete(int index)
         {
-            if (tasks.Count >= 0 && index < tasks.Count)
+            var getIndex = index - 1;
+
+            if (tasks.Count >= 1 && getIndex < tasks.Count)
             {
-                tasks[index].isCompleted = true;
+                tasks[getIndex].SetIsCompleted(true);
                 return true;
             }
             return false;
+        }
+
+        public void SaveTaskToFile(string filePath)
+        {
+            try
+            {
+                var jsonData = JsonSerializer.Serialize(tasks, new JsonSerializerOptions { WriteIndented = true});
+                File.WriteAllText(filePath, jsonData);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Failed to save task: {ex.Message}");
+            }
+        }
+
+        public void LoadTaskFromFile(string filePath) 
+        {
+            try
+            {
+                if (File.Exists(filePath))
+                {
+                    var jsonData = File.ReadAllText(filePath);
+
+                    var options = new JsonSerializerOptions
+                    {
+                        IncludeFields = true,
+                        PropertyNameCaseInsensitive = true,
+                    };
+                    var loadData = JsonSerializer.Deserialize<List<MyTask>>(jsonData, options) ?? new List<MyTask>();
+
+                    tasks.Clear();
+                    tasks.AddRange(loadData);
+                }
+                else
+                {
+                    Console.WriteLine("File Does Not Exist !!!");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($" Failed to Load File {ex.Message}");
+            }
         }
     }
 }

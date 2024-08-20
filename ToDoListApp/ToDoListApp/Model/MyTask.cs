@@ -1,21 +1,21 @@
 ﻿using System;
+using System.Text.Json.Serialization;
 
 namespace ToDoListApp.Model
 {
     public class MyTask
     {
-        private string Title { get; set; }
-        private string Description { get; set; }
-        private DateTime DueDate { get; set; }
-
-        public bool isCompleted {  get; set; } = false;
+        public string Title { get; private set; }
+        public string Description { get; private set; }
+        public DateTime DueDate { get; private set; }
+        public bool isCompleted { get; private set; }
 
         public MyTask(string title, string description, DateTime dueDate) {
             
             Title = title;
             Description = description;
             DueDate = dueDate;
-
+            isCompleted = false;
         }
 
         // Return methods for each property
@@ -30,6 +30,15 @@ namespace ToDoListApp.Model
         public DateTime GetDueDate()
         {
             return DueDate;
+        }
+        public bool GetIsCompleted() 
+        { 
+            return isCompleted;
+        }
+
+        public void SetIsCompleted(bool status)
+        {
+            isCompleted = status;
         }
     }
 }

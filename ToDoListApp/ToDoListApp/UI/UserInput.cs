@@ -29,7 +29,7 @@ namespace ToDoListApp.UI
 
         public int GetTaskIndex(string action)
         {
-            Console.WriteLine("Enter Task Position to be Removed: ");
+            Console.Write($"Enter Task Position to be {action}: ");
             int taskIndex;
 
             while (!int.TryParse(Console.ReadLine(), out taskIndex) || taskIndex < 1)
