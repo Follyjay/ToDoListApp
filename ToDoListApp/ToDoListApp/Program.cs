@@ -24,8 +24,9 @@ namespace ToDoListApp
             {
                 // Menu/Option Outline
                 Console.Write("\n1: Create Task \n2: Remove Task " +
-                    "\n3: Mark Task as Completed \n4: View Task List" +
-                    "\n5: Exit\n\n");
+                    "\n3: Update Task Due-Date \n4: Mark Task as Completed" +
+                    "\n5: View Task List \n6: Sort Tasks By Due-Date" +
+                    "\n7: Exit\n\n");
                 Console.Write("Choose an option: ");
                 Console.Write("");
 
@@ -61,9 +62,24 @@ namespace ToDoListApp
                         break;
 
                     case "3":
-                        var taskIndex = myInput.GetTaskIndex("Completed");
+                        int indexOfTaskToBeUpdated = myInput.GetTaskIndex("Updated");
+                        DateTime newDueDate = myInput.GetTaskNewDueDate();
 
-                        if (taskService.TaskIsComplete(taskIndex))
+                        if (taskService.UpdateDueDate(indexOfTaskToBeUpdated, newDueDate))
+                        {
+                            Console.WriteLine("\nTask due date updated successfully");
+                        }
+                        else
+                        {
+                            Console.WriteLine("Failed to Update Task Deu-Date !!!");
+                        }
+
+                        break;
+
+                    case "4":
+                        int taskIndexToBeCompleted = myInput.GetTaskIndex("Completed");
+
+                        if (taskService.TaskIsComplete(taskIndexToBeCompleted))
                         {
                             Console.WriteLine("Task Completed Successfully\n");
                         }
@@ -74,7 +90,7 @@ namespace ToDoListApp
 
                         break;
 
-                    case "4":
+                    case "5":
                         bool viewList = false;
                         List<MyTask> taskList = [];
 
@@ -127,7 +143,12 @@ namespace ToDoListApp
 
                         break;
 
-                    case "5":
+                    case "6":
+                        var sortedList = taskService.SortTasksByDueDate();
+                        taskService.DisplayTaskSortedByDUeDate(sortedList);
+                        break;
+
+                    case "7":
                         exit = true;
                         break;
 

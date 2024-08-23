@@ -69,7 +69,7 @@ namespace ToDoListApp.Service
                 for (int i = 0; i < tasks.Count; i++)
                 {
                     var task = tasks[i];
-                    status = task.isCompleted ? "Completed" : "Pending";
+                    status = task.GetIsCompleted() ? "Completed" : "Pending";
 
                     Console.WriteLine($"{i + 1}.  {task.GetTitle().ToUpper()}: " +
                                         $"{task.GetDueDate()} {status}");
@@ -85,16 +85,29 @@ namespace ToDoListApp.Service
 
         }
 
+        public void DisplayTaskSortedByDUeDate(List<MyTask> tasks)
+        {
+            Console.Write("");
+            Console.WriteLine("List of Tasks Odered By Due-Date\n");
+
+            DisplayTasks(tasks);
+        }
+
         public bool TaskIsComplete(int index)
         {
             var getIndex = index - 1;
 
             if (tasks.Count >= 1 && getIndex < tasks.Count)
             {
-                tasks[getIndex].SetIsCompleted(true);
+                var status = true;
+
+                tasks[getIndex].SetIsCompleted(status);
                 return true;
             }
-            return false;
+            else
+            {
+                return false;
+            }
         }
 
         public void SaveTaskToFile(string filePath)
@@ -136,6 +149,26 @@ namespace ToDoListApp.Service
             catch (Exception ex)
             {
                 Console.WriteLine($" Failed to Load File {ex.Message}");
+            }
+        }
+
+        public List<MyTask> SortTasksByDueDate()
+        {
+            return tasks.OrderBy(t =>  t.DueDate).ToList();
+        }
+
+        public bool UpdateDueDate(int index,  DateTime newDueDate)
+        {
+            int getIndex = index - 1;
+
+            if (tasks.Count >= 1 && getIndex < tasks.Count)
+            {
+                tasks[getIndex].setDueDate(newDueDate);
+                return true;
+            }
+            else
+            {
+                return false;
             }
         }
     }

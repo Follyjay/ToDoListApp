@@ -31,14 +31,17 @@ namespace ToDoListApp.Model
         {
             return DueDate;
         }
+        public void setDueDate(DateTime newDueDate)
+        {
+            DueDate = newDueDate;
+        }
         public bool GetIsCompleted() 
         { 
             return isCompleted;
         }
-
         public void SetIsCompleted(bool status)
         {
-            isCompleted = status;
+            this.isCompleted = status;
         }
     }
 }

@@ -1,4 +1,8 @@
 ﻿using System;
+using System.Threading.Tasks;
+using ToDoListApp.Model;
+using ToDoListApp.Service;
+using static System.Collections.Specialized.BitVector32;
 
 namespace ToDoListApp.UI
 {
@@ -29,7 +33,7 @@ namespace ToDoListApp.UI
 
         public int GetTaskIndex(string action)
         {
-            Console.Write($"Enter Task Position to be {action}: ");
+            Console.Write($"Enter Task Index/Position to be {action}: ");
             int taskIndex;
 
             while (!int.TryParse(Console.ReadLine(), out taskIndex) || taskIndex < 1)
@@ -37,6 +41,19 @@ namespace ToDoListApp.UI
                 Console.WriteLine("Kindly Enter a Correct Task Index (e.g 1,2,3...)");
             }
             return taskIndex;
+        }
+
+        public DateTime GetTaskNewDueDate()
+        {
+            Console.Write("\nEnter a New Due-Date (YYYY-mm-dd): ");
+            DateTime newDueDate;
+
+            while (!DateTime.TryParse(Console.ReadLine(), out newDueDate))
+            {
+                Console.WriteLine("Kindly Enter a Correct Date Format (YYYY-mm-dd)");
+            }
+
+            return newDueDate;
         }
 
     }

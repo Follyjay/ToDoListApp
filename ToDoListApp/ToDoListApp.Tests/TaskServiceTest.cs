@@ -121,5 +121,25 @@ namespace ToDoListApp.Tests
             // Delete File
             File.Delete(filePath);
         }
+      
+        [Test]
+        public void SortTaskByDueDate_Should_ReturnListOfTaskOderedByDueDate()
+        {
+            // Arrange
+            TaskService taskService = new();
+
+            // Act
+            taskService.AddTask(new MyTask("task 1", "description 1", DateTime.Now.AddDays(2)));
+            taskService.AddTask(new MyTask("task 2", "description 2", DateTime.Now.AddDays(1)));
+            taskService.AddTask(new MyTask("task 3", "description 3", DateTime.Now));
+
+            taskService.GetTasks();
+            var sortedTasks = taskService.SortTasksByDueDate();
+
+            // Assert
+            Assert.That("task 3", Is.EqualTo(sortedTasks[0].GetTitle()));
+            Assert.That("task 2", Is.EqualTo(sortedTasks[1].GetTitle()));
+            Assert.That("task 1", Is.EqualTo(sortedTasks[2].GetTitle()));
+        }
     }
 }
