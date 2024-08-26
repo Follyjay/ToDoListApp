@@ -5,17 +5,30 @@ namespace ToDoListApp.Model
 {
     public class MyTask
     {
-        public string Title { get; private set; }
-        public string Description { get; private set; }
-        public DateTime DueDate { get; private set; }
-        public bool isCompleted { get; private set; }
+        [JsonInclude]
+        private string Title { get; set; }
+        [JsonInclude]
+        private string Description { get; set; }
+        [JsonInclude]
+        private DateTime DueDate { get; set; }
+        [JsonInclude]
+        private bool IsCompleted { get; set; }
+
+        [JsonConstructor]
+        public MyTask(string title, string description, DateTime dueDate, bool isCompleted)
+        {
+            Title = title;
+            Description = description;
+            DueDate = dueDate;
+            IsCompleted = isCompleted;
+        }
 
         public MyTask(string title, string description, DateTime dueDate) {
             
             Title = title;
             Description = description;
             DueDate = dueDate;
-            isCompleted = false;
+            IsCompleted = false;
         }
 
         // Return methods for each property
@@ -37,11 +50,11 @@ namespace ToDoListApp.Model
         }
         public bool GetIsCompleted() 
         { 
-            return isCompleted;
+            return IsCompleted;
         }
         public void SetIsCompleted(bool status)
         {
-            this.isCompleted = status;
+            this.IsCompleted = status;
         }
     }
 }

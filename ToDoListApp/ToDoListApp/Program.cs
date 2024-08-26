@@ -26,7 +26,8 @@ namespace ToDoListApp
                 Console.Write("\n1: Create Task \n2: Remove Task " +
                     "\n3: Update Task Due-Date \n4: Mark Task as Completed" +
                     "\n5: View Task List \n6: Sort Tasks By Due-Date" +
-                    "\n7: Exit\n\n");
+                    "\n7: View Overdue Tasks \n8: View Tasks Due Soon" +
+                    "\n9: Exit\n\n");
                 Console.Write("Choose an option: ");
                 Console.Write("");
 
@@ -149,6 +150,39 @@ namespace ToDoListApp
                         break;
 
                     case "7":
+                        var overdueTasks = taskService.OverDueTasks();
+                        Console.WriteLine("\nOverdue Tasks:");
+                        Console.WriteLine("----------------------\n");
+
+                        if (overdueTasks.Count < 1)
+                        {
+                            Console.WriteLine("No Overdue Tasks");
+                        }
+                        else
+                        {
+                            taskService.DisplayTasks(overdueTasks);
+                        }
+
+                        break;
+
+                    case "8":
+                        int days = myInput.GetNumberOfDays();
+                        var tasksDueSoon = taskService.TasksDueSoon(days);
+
+                        Console.WriteLine($"Tasks due within the next {days} days:\n");
+
+                        if (tasksDueSoon.Count < 1)
+                        {
+                            Console.WriteLine("No tasks are due within the specified time frame.");
+                        }
+                        else
+                        {
+                            taskService.DisplayTasks(tasksDueSoon);
+                        }
+
+                        break;
+
+                    case "9":
                         exit = true;
                         break;
 

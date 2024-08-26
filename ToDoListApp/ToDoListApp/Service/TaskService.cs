@@ -41,15 +41,15 @@ namespace ToDoListApp.Service
                 // Return all tasks when both parameters are true.
                 return tasks;  
             }
-            else if (showCompleted)
+            else if (showCompleted && !showPending)
             {
                 // Return only completed tasks when only showCompleted is true.
-                return tasks.Where(t => t.isCompleted).ToList(); 
+                return tasks.Where(t => t.GetIsCompleted()).ToList(); 
             }
-            else if (showPending)
+            else if (!showCompleted && showPending)
             {
                 // Return only pending tasks when only showPending is true.
-                return tasks.Where(t => !t.isCompleted).ToList();  
+                return tasks.Where(t => !t.GetIsCompleted()).ToList();  
             }
             else
             {
@@ -60,19 +60,17 @@ namespace ToDoListApp.Service
 
         public void DisplayTasks(List<MyTask> tasks)
         {
-            string status;
-
             Console.WriteLine("");
 
             if (tasks.Count > 0)
             {
                 for (int i = 0; i < tasks.Count; i++)
                 {
-                    var task = tasks[i];
-                    status = task.GetIsCompleted() ? "Completed" : "Pending";
+                    //bool getStatus = tasks[i].GetIsCompleted();
+                    string status = tasks[i].GetIsCompleted() ? "Completed" : "Pending";
 
-                    Console.WriteLine($"{i + 1}.  {task.GetTitle().ToUpper()}: " +
-                                        $"{task.GetDueDate()} {status}");
+                    Console.WriteLine($"{i + 1}.  {tasks[i].GetTitle().ToUpper()}: " +
+                                        $"{tasks[i].GetDueDate()} {status}");
                 }
                 Console.WriteLine("-----------------------------------------------\n");
 
@@ -99,9 +97,10 @@ namespace ToDoListApp.Service
 
             if (tasks.Count >= 1 && getIndex < tasks.Count)
             {
-                var status = true;
+                //bool status = true;
 
-                tasks[getIndex].SetIsCompleted(status);
+                tasks[getIndex].SetIsCompleted(true);
+                //veTaskToFile(filePath);
                 return true;
             }
             else
@@ -131,6 +130,9 @@ namespace ToDoListApp.Service
                 {
                     var jsonData = File.ReadAllText(filePath);
 
+                    Console.WriteLine("File Content:");
+                    Console.WriteLine(jsonData);
+
                     var options = new JsonSerializerOptions
                     {
                         IncludeFields = true,
@@ -140,6 +142,7 @@ namespace ToDoListApp.Service
 
                     tasks.Clear();
                     tasks.AddRange(loadData);
+                    DisplayTasks(tasks);
                 }
                 else
                 {
@@ -154,7 +157,7 @@ namespace ToDoListApp.Service
 
         public List<MyTask> SortTasksByDueDate()
         {
-            return tasks.OrderBy(t =>  t.DueDate).ToList();
+            return tasks.OrderBy(t =>  t.GetDueDate()).ToList();
         }
 
         public bool UpdateDueDate(int index,  DateTime newDueDate)
@@ -170,6 +173,17 @@ namespace ToDoListApp.Service
             {
                 return false;
             }
+        }
+
+        public List<MyTask> OverDueTasks()
+        {
+            return tasks.Where(t => t.GetDueDate() < DateTime.Now && t.GetIsCompleted().Equals(false)).ToList();
+        }
+
+        public List<MyTask> TasksDueSoon(int days)
+        {
+            DateTime dateThreshold = DateTime.Now.AddDays(days);
+            return tasks.Where(t => t.GetDueDate() >= DateTime.Now && t.GetDueDate() <= dateThreshold).ToList();
         }
     }
 }

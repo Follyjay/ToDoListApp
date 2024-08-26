@@ -31,7 +31,7 @@ namespace ToDoListApp.Tests
             Assert.That(title, Is.EqualTo(tasks[0].GetTitle()));
             Assert.That(description, Is.EqualTo(tasks[0].GetDescription()));
             Assert.That(dueDate, Is.EqualTo(tasks[0].GetDueDate()));
-            Assert.That(tasks[0].isCompleted, Is.False);
+            Assert.That(tasks[0].GetIsCompleted(), Is.False);
         }
 
         [Test]
@@ -73,7 +73,7 @@ namespace ToDoListApp.Tests
 
             // Asserts
             Assert.That(result, Is.True);
-            Assert.That(tasks[0].isCompleted, Is.True);
+            Assert.That(tasks[0].GetIsCompleted(), Is.True);
         }
 
         [Test]
@@ -95,8 +95,8 @@ namespace ToDoListApp.Tests
             Assert.That(2, Is.EqualTo(allTasks.Count));
             Assert.That(1, Is.EqualTo(completedTasks.Count));
             Assert.That(1, Is.EqualTo(pendingTasks.Count));
-            Assert.That(allTasks[0].isCompleted, Is.True);
-            Assert.That(allTasks[1].isCompleted, Is.False);
+            Assert.That(allTasks[0].GetIsCompleted(), Is.True);
+            Assert.That(allTasks[1].GetIsCompleted(), Is.False);
         }
 
         [Test]
@@ -140,6 +140,40 @@ namespace ToDoListApp.Tests
             Assert.That("task 3", Is.EqualTo(sortedTasks[0].GetTitle()));
             Assert.That("task 2", Is.EqualTo(sortedTasks[1].GetTitle()));
             Assert.That("task 1", Is.EqualTo(sortedTasks[2].GetTitle()));
+        }
+
+        [Test]
+        public void OverDueTasks_Should_ReturnListOfTasks_ThatAreOverDue()
+        {
+            // Arrange
+            TaskService taskService = new();
+
+            // Act
+            taskService.AddTask(new MyTask("Task 1", "This is a test", DateTime.Now.AddDays(-3)));
+            taskService.AddTask(new MyTask("Task 2", "This is another test", DateTime.Now.AddDays(1)));
+
+            var tasks = taskService.OverDueTasks();
+
+            // Assert
+            Assert.That(1, Is.EqualTo(tasks.Count));
+            Assert.That("Task 1", Is.EqualTo(tasks[0].GetTitle()));
+        }
+
+        [Test]
+        public void TasksDueSoon_Should_ReturnTasksThatWillBeDue_OnSetThreshold()
+        {
+            // Arrange
+            TaskService taskService = new();
+
+            // Act
+            taskService.AddTask(new MyTask("Task 1", "This is a test", DateTime.Now.AddDays(3)));
+            taskService.AddTask(new MyTask("Task 2", "This is another test", DateTime.Now.AddDays(1)));
+
+            var tasks = taskService.TasksDueSoon(3);
+
+            // Assert
+            Assert.That(2,Is.EqualTo(tasks.Count));
+            Assert.That("Task 1", Is.EqualTo(tasks[0].GetTitle()));
         }
     }
 }

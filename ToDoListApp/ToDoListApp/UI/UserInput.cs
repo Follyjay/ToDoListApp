@@ -56,5 +56,17 @@ namespace ToDoListApp.UI
             return newDueDate;
         }
 
+        public int GetNumberOfDays()
+        {
+            Console.Write("\nEnter the number of days to check for upcoming due tasks: ");
+            int days;
+
+            while (!int.TryParse(Console.ReadLine(), out days) || days < 1)
+            {
+                Console.WriteLine("\nKindly Enter a specific Number of day(s) (e.g 1,2,3...)");
+            }
+            return days;
+        }
+
     }
 }
