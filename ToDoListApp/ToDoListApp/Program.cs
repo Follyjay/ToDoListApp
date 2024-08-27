@@ -1,4 +1,6 @@
-﻿using ToDoListApp.Model;
+﻿using System;
+using System.Threading.Channels;
+using ToDoListApp.Model;
 using ToDoListApp.Service;
 using ToDoListApp.UI;
 
@@ -15,6 +17,8 @@ namespace ToDoListApp
             TaskService taskService = new();
             UserInput myInput = new();
 
+            taskService.UpdateRecurrentTasks(); // updates recurring tasks
+
             string path = "myFile.json"; // file path declaration 
             taskService.LoadTaskFromFile(path); // Load list of task from File
 
@@ -25,9 +29,9 @@ namespace ToDoListApp
                 // Menu/Option Outline
                 Console.Write("\n1: Create Task \n2: Remove Task " +
                     "\n3: Update Task Due-Date \n4: Mark Task as Completed" +
-                    "\n5: View Task List \n6: Sort Tasks By Due-Date" +
-                    "\n7: View Overdue Tasks \n8: View Tasks Due Soon" +
-                    "\n9: Exit\n\n");
+                    "\n5: Update \n6: View Task List \n7: Sort Tasks" +
+                    "\n8: View Overdue Tasks \n9: View Tasks Due Soon" +
+                    "\n10: Exit\n\n");
                 Console.Write("Choose an option: ");
                 Console.Write("");
 
@@ -35,10 +39,10 @@ namespace ToDoListApp
                 {
                     case "1":
                         // UserInput object to get the users' input
-                        var (Title, Description, DueDate) = myInput.GetUserInput();
+                        var (Title, Description, DueDate, Priority, Interval) = myInput.GetUserInput();
 
                         //Creates an new To-do-list event
-                        MyTask newTask = new(Title, Description, DueDate);
+                        MyTask newTask = new(Title, Description, DueDate, Priority, Interval);
 
                         //Adds a new event to the collection
                         taskService.AddTask(newTask);
@@ -92,6 +96,9 @@ namespace ToDoListApp
                         break;
 
                     case "5":
+
+
+                    case "6":
                         bool viewList = false;
                         List<MyTask> taskList = [];
 
@@ -144,12 +151,45 @@ namespace ToDoListApp
 
                         break;
 
-                    case "6":
-                        var sortedList = taskService.SortTasksByDueDate();
-                        taskService.DisplayTaskSortedByDUeDate(sortedList);
+                    case "7":
+                        bool stop = false;
+
+                        Console.WriteLine("");
+                        while (!stop)
+                        {
+                            Console.WriteLine("1. Sort By Duedate \n2. Sort By Priority" +
+                                "\n3. Sort By Recurrence Interval\n");
+                            Console.Write("Choose an Option: ");
+                            Console.Write("");
+
+                            switch (Console.ReadLine())
+                            {
+                                case "1":
+                                    var sortedList = taskService.SortTasksByDueDate();
+                                    taskService.DisplayTaskSortedByDUeDate(sortedList);
+
+                                    stop = true;
+                                    break;
+
+                                case "2":
+                                    var priorityList = taskService.SortTaskByPriority();
+                                    taskService.DisplayTasks(priorityList);
+
+                                    stop = true;
+                                    break;
+
+                                case "3":
+                                    var recurrenceList = taskService.SortTaskByRecurrence();
+                                    taskService.DisplayTasks(recurrenceList);
+
+                                    stop = true;
+                                    break;
+                            }
+                        }
+                        
                         break;
 
-                    case "7":
+                    case "8":
                         var overdueTasks = taskService.OverDueTasks();
                         Console.WriteLine("\nOverdue Tasks:");
                         Console.WriteLine("----------------------\n");
@@ -165,7 +205,7 @@ namespace ToDoListApp
 
                         break;
 
-                    case "8":
+                    case "9":
                         int days = myInput.GetNumberOfDays();
                         var tasksDueSoon = taskService.TasksDueSoon(days);
 
@@ -182,7 +222,7 @@ namespace ToDoListApp
 
                         break;
 
-                    case "9":
+                    case "10":
                         exit = true;
                         break;
 

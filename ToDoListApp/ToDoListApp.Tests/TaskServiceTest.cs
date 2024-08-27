@@ -21,7 +21,7 @@ namespace ToDoListApp.Tests
 
             // Act
 
-            taskService.AddTask(new MyTask(title, description, dueDate));
+            taskService.AddTask(new MyTask(title, description, dueDate, "Low", "None"));
 
             // Asserts
 
@@ -45,7 +45,7 @@ namespace ToDoListApp.Tests
             var dueDate = DateTime.Now.AddDays(1);
 
             // Act
-            taskService.AddTask(new MyTask(title, description, dueDate));
+            taskService.AddTask(new MyTask(title, description, dueDate, "Low", "None"));
             var result = taskService.RemoveTask(1);
 
             var tasks = taskService.GetTasks();
@@ -66,7 +66,7 @@ namespace ToDoListApp.Tests
             var dueDate = DateTime.Now.AddDays(1);
 
             // Act
-            taskService.AddTask(new MyTask(title, description, dueDate));
+            taskService.AddTask(new MyTask(title, description, dueDate, "Low", "None"));
             var result = taskService.TaskIsComplete(1);
 
             var tasks = taskService.GetTasks();
@@ -83,8 +83,8 @@ namespace ToDoListApp.Tests
             TaskService taskService = new();
            
             // Act
-            taskService.AddTask(new MyTask("task 1", "Completed Task", DateTime.Now));
-            taskService.AddTask(new MyTask("task 2", "Pending Task", DateTime.Now.AddDays(1)));
+            taskService.AddTask(new MyTask("task 1", "Completed Task", DateTime.Now, "Low", "None"));
+            taskService.AddTask(new MyTask("task 2", "Pending Task", DateTime.Now.AddDays(1), "Low", "None"));
             taskService.TaskIsComplete(1);
 
             var allTasks = taskService.GetTasks();
@@ -107,8 +107,8 @@ namespace ToDoListApp.Tests
             string filePath = "test.json";
 
             // Act
-            taskService.AddTask(new MyTask("task 1", "Completed Task", DateTime.Now));
-            taskService.AddTask(new MyTask("task 2", "Pending Task", DateTime.Now.AddDays(1)));
+            taskService.AddTask(new MyTask("task 1", "Completed Task", DateTime.Now, "Low", "None"));
+            taskService.AddTask(new MyTask("task 2", "Pending Task", DateTime.Now.AddDays(1), "Low", "None"));
             taskService.SaveTaskToFile(filePath);
 
             taskService.LoadTaskFromFile(filePath);
@@ -129,9 +129,9 @@ namespace ToDoListApp.Tests
             TaskService taskService = new();
 
             // Act
-            taskService.AddTask(new MyTask("task 1", "description 1", DateTime.Now.AddDays(2)));
-            taskService.AddTask(new MyTask("task 2", "description 2", DateTime.Now.AddDays(1)));
-            taskService.AddTask(new MyTask("task 3", "description 3", DateTime.Now));
+            taskService.AddTask(new MyTask("task 1", "description 1", DateTime.Now.AddDays(2), "Low", "None"));
+            taskService.AddTask(new MyTask("task 2", "description 2", DateTime.Now.AddDays(1), "Low", "None"));
+            taskService.AddTask(new MyTask("task 3", "description 3", DateTime.Now, "Low", "None"));
 
             taskService.GetTasks();
             var sortedTasks = taskService.SortTasksByDueDate();
@@ -149,8 +149,8 @@ namespace ToDoListApp.Tests
             TaskService taskService = new();
 
             // Act
-            taskService.AddTask(new MyTask("Task 1", "This is a test", DateTime.Now.AddDays(-3)));
-            taskService.AddTask(new MyTask("Task 2", "This is another test", DateTime.Now.AddDays(1)));
+            taskService.AddTask(new MyTask("Task 1", "This is a test", DateTime.Now.AddDays(-3), "Low", "None"));
+            taskService.AddTask(new MyTask("Task 2", "This is another test", DateTime.Now.AddDays(1), "Low", "None"));
 
             var tasks = taskService.OverDueTasks();
 
@@ -166,8 +166,8 @@ namespace ToDoListApp.Tests
             TaskService taskService = new();
 
             // Act
-            taskService.AddTask(new MyTask("Task 1", "This is a test", DateTime.Now.AddDays(3)));
-            taskService.AddTask(new MyTask("Task 2", "This is another test", DateTime.Now.AddDays(1)));
+            taskService.AddTask(new MyTask("Task 1", "This is a test", DateTime.Now.AddDays(3), "Low", "None"));
+            taskService.AddTask(new MyTask("Task 2", "This is another test", DateTime.Now.AddDays(1), "Low", "None"));
 
             var tasks = taskService.TasksDueSoon(3);
 
@@ -175,5 +175,6 @@ namespace ToDoListApp.Tests
             Assert.That(2,Is.EqualTo(tasks.Count));
             Assert.That("Task 1", Is.EqualTo(tasks[0].GetTitle()));
         }
+      
     }
 }

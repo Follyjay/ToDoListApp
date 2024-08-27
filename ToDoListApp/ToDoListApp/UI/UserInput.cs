@@ -8,7 +8,7 @@ namespace ToDoListApp.UI
 {
     public class UserInput
     {
-        public (string Title, string Description, DateTime DueDate) GetUserInput()
+        public (string Title, string Description, DateTime DueDate, string Priority, string RecurrenceInterval) GetUserInput()
         {
             Console.Write("\n");
 
@@ -28,7 +28,14 @@ namespace ToDoListApp.UI
                 Console.WriteLine("Wrong Date Format!!! Please enter correct format");
             }
 
-            return (title, description, dueDate);
+            Console.Write("Priority (Low, Medium, High): ");
+            string priority = Console.ReadLine();
+            Console.Write("");
+
+            Console.Write("Interval (None, Daily, Weekly, Monthly): ");
+            string interval = Console.ReadLine();
+
+            return (title, description, dueDate, priority, interval);
         }
 
         public int GetTaskIndex(string action)

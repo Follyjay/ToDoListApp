@@ -13,6 +13,8 @@ namespace ToDoListApp.Model
         private DateTime DueDate { get; set; }
         [JsonInclude]
         private bool IsCompleted { get; set; }
+        public string Priority { get; set; } = "Low";
+        public string RecurrenceInterval { get; set; } = "None";
 
         [JsonConstructor]
         public MyTask(string title, string description, DateTime dueDate, bool isCompleted)
@@ -23,12 +25,14 @@ namespace ToDoListApp.Model
             IsCompleted = isCompleted;
         }
 
-        public MyTask(string title, string description, DateTime dueDate) {
+        public MyTask(string title, string description, DateTime dueDate, string priority, string recurrenceInterval) {
             
             Title = title;
             Description = description;
             DueDate = dueDate;
             IsCompleted = false;
+            Priority = priority;
+            RecurrenceInterval = recurrenceInterval;
         }
 
         // Return methods for each property
@@ -56,5 +60,14 @@ namespace ToDoListApp.Model
         {
             this.IsCompleted = status;
         }
+
+        //public string GetPriority()
+        //{
+        //    return Priority;
+        //}
+        //public string GetRecurrenceInterval()
+        //{
+        //    return RecurrenceInterval;
+        //}
     }
 }

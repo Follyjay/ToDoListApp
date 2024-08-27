@@ -66,19 +66,19 @@ namespace ToDoListApp.Service
             {
                 for (int i = 0; i < tasks.Count; i++)
                 {
-                    //bool getStatus = tasks[i].GetIsCompleted();
                     string status = tasks[i].GetIsCompleted() ? "Completed" : "Pending";
 
-                    Console.WriteLine($"{i + 1}.  {tasks[i].GetTitle().ToUpper()}: " +
-                                        $"{tasks[i].GetDueDate()} {status}");
+                    Console.WriteLine($"{i + 1}:  {tasks[i].GetTitle().ToUpper()}-: " +
+                                        $"{tasks[i].GetDueDate()} {tasks[i].Priority} " + 
+                                        $"{tasks[i].RecurrenceInterval} {status}");
                 }
-                Console.WriteLine("-----------------------------------------------\n");
+                Console.WriteLine("------------------------------------------------------\n");
 
             }
             else
             {
                 Console.WriteLine("Empty List! Kindly Add new Tasks");
-                Console.WriteLine("-----------------------------------------------\n");
+                Console.WriteLine("-------------------------------------\n");
             }
 
         }
@@ -184,6 +184,38 @@ namespace ToDoListApp.Service
         {
             DateTime dateThreshold = DateTime.Now.AddDays(days);
             return tasks.Where(t => t.GetDueDate() >= DateTime.Now && t.GetDueDate() <= dateThreshold).ToList();
+        }
+
+        public void UpdateRecurrentTasks()
+        {
+            var taskList = tasks.Where(t => t.GetIsCompleted().Equals(true) && t.RecurrenceInterval != "None").ToList();
+            
+            foreach (var task in taskList)
+            {
+                if (task.RecurrenceInterval.Equals("Daily"))
+                {
+                    task.setDueDate(task.GetDueDate().AddDays(1));
+                }
+                else if (task.RecurrenceInterval.Equals("Weekly"))
+                {
+                    task.setDueDate(task.GetDueDate().AddDays(7));
+                }
+                else if (task.RecurrenceInterval.Equals("Monthly"))
+                {
+                    task.setDueDate(task.GetDueDate().AddMonths(1));
+                }
+            }
+
+        }
+
+        public List<MyTask> SortTaskByPriority()
+        {
+            return tasks.OrderByDescending(t => t.Priority).ToList();
+        }
+
+        public List<MyTask> SortTaskByRecurrence()
+        {
+            return tasks.OrderByDescending(t => t.RecurrenceInterval).ToList();
         }
     }
 }
