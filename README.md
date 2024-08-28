@@ -4,6 +4,20 @@
 
 The To-Do List Console Application is a simple yet powerful tool that allows users to manage tasks efficiently from the command line. It includes features for adding tasks with due dates, marking tasks as complete, prioritizing tasks, handling recurring tasks, and more. This application is built using C# and follows best practices in software development, including unit testing and Agile methodology.
 
+## Table of Contents
+
+- [Features](#features)
+- [Getting Started](#getting-Started)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Project Structure](#project-structure)
+- [Testing](#test)
+- [Contributing](#contributing)
+- [License](#license)
+- [Acknowledgements](#acknowledgements)
+- 
+- 
+
 ## **Features**
 
 - **Add Tasks**: Users can add tasks with descriptions, due dates, priorities (High, Medium, Low), and recurrence intervals (None, Daily, Weekly, Monthly).
@@ -52,6 +66,7 @@ Once the application is running, you will be presented with a menu of options:
    - Sort by Duedate.
    - Sort by Priority.
    - Sort by Recurrence Interval
+     
 6. Update Task Due Date: Change the due date for a specific task.
 7. View Overdue Tasks: Display tasks that are past their due dates.
 8. View Tasks Due Soon: View tasks that are due within the next few days.
@@ -59,8 +74,9 @@ Once the application is running, you will be presented with a menu of options:
 10. Manage Recurring Tasks: Automatically update recurring tasks based on their intervals.
 11. Exit: Save all tasks and exit the application.
 
-## **Code Structure**
+## **Project Structure**
 
+```plaintext
 ToDoList/
 │
 ├── ToDoListApp.Tests/
@@ -78,18 +94,18 @@ ToDoList/
 |   └── ToDoListApp.csproj
 |
 └── ToDoListApp.sln
+```
 
-- `Program.cs`: The entry point of the application. Handles the main menu and user interactions.
-- `MyTask.cs`: Represents a task with properties such as description, due date, priority, and recurrence interval.
-- `TaskService.cs`: Contains business logic for managing tasks, including adding, removing, sorting, and handling recurring tasks.
-- `UserInput.cs`: Manages user interface components, such as displaying menus and task lists.
-- `TaskServiceTests.cs`: Contains unit tests for TaskService, ensuring that task management functions correctly.
+   - `Program.cs`: The entry point of the application. Handles the main menu and user interactions.
+   - `MyTask.cs`: Represents a task with properties such as description, due date, priority, and recurrence interval.
+   - `TaskService.cs`: Contains business logic for managing tasks, including adding, removing, sorting, and handling recurring tasks.
+   - `UserInput.cs`: Manages user interface components, such as displaying menus and task lists.
+   - `TaskServiceTests.cs`: Contains unit tests for TaskService, ensuring that task management functions correctly.
 
 ## **Testing**
 Unit tests have been written using NUnit. To run the tests, use the following command:
 
 ```bash
-Copy code
 dotnet test
 ```
 Ensure all tests pass to confirm that the application behaves as expected.
@@ -104,7 +120,6 @@ If you would like to contribute to this project, please follow these steps:
 - Create a New Branch: Create a branch for your feature or bug fix.
 
   ```bash
-  Copy code
   git checkout -b feature/your-feature-name
   ```
 - Make Your Changes: Implement your changes and commit them with clear and descriptive messages.
@@ -112,7 +127,6 @@ If you would like to contribute to this project, please follow these steps:
 - Push to Your Fork: Push your changes to your forked repository.
 
   ```bash
-  Copy code
   git push origin feature/your-feature-name
   ```
 - Submit a Pull Request: Open a pull request on the original repository, describing your changes.
