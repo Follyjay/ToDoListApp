@@ -15,8 +15,6 @@ The To-Do List Console Application is a simple yet powerful tool that allows use
 - [Contributing](#contributing)
 - [License](#license)
 - [Acknowledgements](#acknowledgements)
-- 
-- 
 
 ## **Features**
 
